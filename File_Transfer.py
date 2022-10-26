@@ -22,6 +22,8 @@ for root, dirs, files in os.walk(created):
         if mtime > ago:
             print("Moved: ", fname, " Last modified at ", mtime.strftime("%H:%M %m/%d/%Y")) #prints info of files moved and time last modified
             shutil.move(path, dest) #moves all files that fit the criteria
+        else:
+            pass 
 
 
 class ParentWindow(Frame):
