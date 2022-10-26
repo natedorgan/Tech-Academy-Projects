@@ -8,24 +8,6 @@ import pytz
 
 import datetime as dt
 
-now= dt.datetime.now()
-ago = now-dt.timedelta(hours=24)
-created =r'C:\Users\nated\OneDrive\Desktop\Customer Source'
-dest =r'C:\Users\nated\OneDrive\Desktop\Customer Destination'
-
-#using the os.walk() function to move through the files
-for root, dirs, files in os.walk(created):
-    for fname in files:
-        path = os.path.join(root, fname) #appending fname to the root to complete the path
-        st = os.stat(path) #gets the timestamp (and other info) about the files in Customer Source
-        mtime = dt.datetime.fromtimestamp(st.st_mtime) #finds the difference between the current time and the timestamp of the file modification/creation
-        if mtime > ago:
-            print("Moved: ", fname, " Last modified at ", mtime.strftime("%H:%M %m/%d/%Y")) #prints info of files moved and time last modified
-            shutil.move(path, dest) #moves all files that fit the criteria
-        else:
-            pass 
-
-
 class ParentWindow(Frame):
     def __init__(self, master):
         Frame.__init__(self)
@@ -96,11 +78,19 @@ class ParentWindow(Frame):
         destination = self.destination_dir.get()
         #Gets a list of files in the source directory
         source_files = os.listdir(source)
+
+        now= dt.datetime.now()
+        ago= now-dt.timedelta(hours=24)
+        
         #Runs through each file in the source directory
         for i in source_files:
-            #moves each file from the source to the destination
-            shutil.move(source + '/' + i, destination)
-            print(i + ' was successfully transferred.')
+            path = os.path.join(source, i) #appending fname to the root to complete the path
+            st = os.stat(path) #gets the timestamp (and other info) about the files in Customer Source
+            mtime = dt.datetime.fromtimestamp(st.st_mtime) #finds the difference between the current time and the timestamp of the file modification/creation
+            if mtime > ago:
+                #moves each file from the source to the destination
+                shutil.move(source + '/' + i, destination)
+                print(i + ' was successfully transferred.')
 
     #Creates function to exit program
     def exit_program(self):
